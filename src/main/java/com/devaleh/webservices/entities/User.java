@@ -1,5 +1,6 @@
 package com.devaleh.webservices.entities;
 
+
 import jakarta.persistence.*;
 
 import java.io.Serializable;

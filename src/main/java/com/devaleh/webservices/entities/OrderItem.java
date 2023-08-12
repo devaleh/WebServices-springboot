@@ -1,6 +1,7 @@
 package com.devaleh.webservices.entities;
 
 import com.devaleh.webservices.entities.pk.OrderItemPK;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
@@ -29,6 +30,7 @@ public class OrderItem implements Serializable {
         this.price = price;
     }
 
+    @JsonIgnore
     public Order getOrder() {
        return id.getOrder();
     }

@@ -2,6 +2,7 @@ package com.devaleh.webservices.services;
 
 import com.devaleh.webservices.entities.Order;
 import com.devaleh.webservices.repositories.OrderRepository;
+import com.devaleh.webservices.services.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +20,7 @@ public class OrderService {
     }
 
     public Order findById(Long id) {
-       Optional<Order> obj = repository.findById(id);
-       return obj.get();
+       Optional<Order> order = repository.findById(id);
+        return order.orElseThrow(() -> new ResourceNotFoundException(id));
     }
 }

@@ -2,6 +2,7 @@ package com.devaleh.webservices.services;
 
 import com.devaleh.webservices.entities.Category;
 import com.devaleh.webservices.repositories.CategoryRepository;
+import com.devaleh.webservices.services.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +20,7 @@ public class CategoryService {
     }
 
     public Category findById(Long id) {
-       Optional<Category> obj = repository.findById(id);
-       return obj.get();
+       Optional<Category> category = repository.findById(id);
+        return category.orElseThrow(() -> new ResourceNotFoundException(id));
     }
 }

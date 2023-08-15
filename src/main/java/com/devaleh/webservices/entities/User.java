@@ -2,6 +2,7 @@ package com.devaleh.webservices.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import org.springframework.hateoas.RepresentationModel;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -10,7 +11,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "tb_user")
-public class User implements Serializable {
+public class User extends RepresentationModel<Product> implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id

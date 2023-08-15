@@ -1,10 +1,10 @@
 package com.devaleh.webservices.services;
 
 import com.devaleh.webservices.entities.Product;
-import com.devaleh.webservices.entities.User;
 import com.devaleh.webservices.repositories.ProductRepository;
 import com.devaleh.webservices.services.exception.DatabaseException;
 import com.devaleh.webservices.services.exception.ResourceNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -24,8 +24,8 @@ public class ProductService {
     }
 
     public Product findById(Long id) {
-       Optional<Product> obj = repository.findById(id);
-        return obj.orElseThrow(() -> new ResourceNotFoundException(id));
+       Optional<Product> product = repository.findById(id);
+        return product.orElseThrow(() -> new ResourceNotFoundException(id));
     }
 
     public Product insert(Product product) {
@@ -40,5 +40,22 @@ public class ProductService {
         } catch (DataIntegrityViolationException e) {
             throw new DatabaseException(e.getMessage());
         }
+    }
+
+    public Product update(Long id, Product product) {
+        try {
+            Product entity = repository.getReferenceById(id);
+            updateData(entity, product);
+            return repository.save(entity);
+        } catch (EntityNotFoundException e) {
+            throw new ResourceNotFoundException(id);
+        }
+    }
+
+    private void updateData(Product entity, Product product) {
+        entity.setName(product.getName());
+        entity.setDescription(product.getDescription());
+        entity.setPrice(product.getPrice());
+        entity.setImgUrl(product.getImgUrl());
     }
 }

@@ -26,7 +26,7 @@ public class ProductController {
         List<Product> productsList = service.findAll();
         for (Product product : productsList) {
             Long id = product.getId();
-            product.add(linkTo(methodOn(ProductController.class).getOneProduct(product.getId())).withSelfRel());
+            product.add(linkTo(methodOn(ProductController.class).getOneProduct(id)).withSelfRel());
         }
         return ResponseEntity.ok().body(productsList);
     }
@@ -49,5 +49,11 @@ public class ProductController {
     public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
         service.delete(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<Product> updateProduct(@PathVariable Long id, @RequestBody Product product) {
+        product = service.update(id, product);
+        return ResponseEntity.ok().body(product);
     }
 }

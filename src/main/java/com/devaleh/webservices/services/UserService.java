@@ -24,12 +24,12 @@ public class UserService {
     }
 
     public User findById(Long id) {
-       Optional<User> obj = repository.findById(id);
-       return obj.orElseThrow(() -> new ResourceNotFoundException(id));
+       Optional<User> user = repository.findById(id);
+       return user.orElseThrow(() -> new ResourceNotFoundException(id));
     }
 
-    public User insert(User obj) {
-        return repository.save(obj);
+    public User insert(User user) {
+        return repository.save(user);
     }
 
     public void delete(Long id) {
@@ -42,19 +42,19 @@ public class UserService {
         }
     }
 
-    public User update(Long id, User obj) {
+    public User update(Long id, User user) {
         try {
             User entity = repository.getReferenceById(id);
-            updateData(entity, obj);
+            updateData(entity, user);
             return repository.save(entity);
         } catch (EntityNotFoundException e) {
             throw new ResourceNotFoundException(id);
         }
     }
 
-    private void updateData(User entity, User obj) {
-        entity.setName(obj.getName());
-        entity.setEmail(obj.getEmail());
-        entity.setPhone(obj.getPhone());
+    private void updateData(User entity, User user) {
+        entity.setName(user.getName());
+        entity.setEmail(user.getEmail());
+        entity.setPhone(user.getPhone());
     }
 }

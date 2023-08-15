@@ -10,6 +10,9 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 import java.util.List;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
 @RestController
 @RequestMapping(value = "/users")
 public class UserController {
@@ -19,20 +22,26 @@ public class UserController {
 
     @GetMapping
     public ResponseEntity<List<User>> getAllUsers() {
-        return ResponseEntity.ok().body(service.findAll());
+        List<User> usersList = service.findAll();
+        for (User user : usersList) {
+            Long id = user.getId();
+            user.add(linkTo(methodOn(UserController.class).getOneUser(id)).withSelfRel());
+        }
+        return ResponseEntity.ok().body(usersList);
     }
 
     @GetMapping(value ="/{id}")
     public ResponseEntity<User> getOneUser(@PathVariable Long id) {
-        User obj = service.findById(id);
-        return ResponseEntity.ok().body(obj);
+        User user = service.findById(id);
+        user.add(linkTo(methodOn(UserController.class).getAllUsers()).withRel("Users List"));
+        return ResponseEntity.ok().body(user);
     }
 
     @PostMapping
-    public ResponseEntity<User> insertUser(@RequestBody User obj) {
-        obj = service.insert(obj);
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
-        return ResponseEntity.created(uri).body(obj);
+    public ResponseEntity<User> insertUser(@RequestBody User user) {
+        user = service.insert(user);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(user.getId()).toUri();
+        return ResponseEntity.created(uri).body(user);
     }
 
     @DeleteMapping(value = "/{id}")
@@ -42,8 +51,8 @@ public class UserController {
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User obj) {
-        obj = service.update(id, obj);
-        return ResponseEntity.ok().body(obj);
+    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User user) {
+        user = service.update(id, user);
+        return ResponseEntity.ok().body(user);
     }
 }

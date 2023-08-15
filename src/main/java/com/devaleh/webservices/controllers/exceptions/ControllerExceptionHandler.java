@@ -1,4 +1,4 @@
-package com.devaleh.webservices.resource.exceptions;
+package com.devaleh.webservices.controllers.exceptions;
 
 import com.devaleh.webservices.services.exception.DatabaseException;
 import com.devaleh.webservices.services.exception.ResourceNotFoundException;
@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import java.time.Instant;
 
 @ControllerAdvice
-public class ResourceExceptionHandler {
+public class ControllerExceptionHandler {
 
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<StandardError> resourceNotFound(ResourceNotFoundException e, HttpServletRequest request) {

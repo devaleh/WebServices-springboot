@@ -1,4 +1,4 @@
-package com.devaleh.webservices.resource.exceptions;
+package com.devaleh.webservices.controllers.exceptions;
 
 import java.io.Serializable;
 import java.time.Instant;

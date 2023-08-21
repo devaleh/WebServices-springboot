@@ -28,7 +28,7 @@ public class ProductService {
         return product.orElseThrow(() -> new ResourceNotFoundException(id));
     }
 
-    public Product insert(Product product) {
+    public Product save(Product product) {
         return repository.save(product);
     }
 

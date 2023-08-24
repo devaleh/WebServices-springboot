@@ -40,7 +40,10 @@ public class UserController {
     @PostMapping
     public ResponseEntity<User> insertUser(@RequestBody User user) {
         user = service.save(user);
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(user.getId()).toUri();
+        URI uri = ServletUriComponentsBuilder
+                .fromCurrentRequest().path("/{id}")
+                .buildAndExpand(user.getId())
+                .toUri();
         return ResponseEntity.created(uri).body(user);
     }
 
